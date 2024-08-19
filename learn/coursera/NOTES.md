@@ -68,3 +68,29 @@ The distance between steps shrinks as the gradient descent approaches zero, sinc
 For linear regression, the squared error cost is always bowl shaped surface and has only one minimum. In more complex problems, you can find local minimum instead of global minimum. 
 
 “Batch” gradient descent - each update step uses all the training examples.
+
+## Multiple linear regression
+Not the same as multivariate linear regression
+
+$$
+f_{\vec{w},b}(\vec{x})=\vec{w}\cdot\vec{x}+b
+$$
+
+Vectorization with numpy: `f = np.dot(w,x)+b`. Runs faster than summing over all components, since it parallelizes computations. GPU's and modern CPU's implement Single Instruction, Multiple Data (SIMD) pipelines allowing multiple operations to be issued in parallel.
+
+
+**Gradient descent with multiple features**
+
+$$
+w_j = w_j - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{w_j}}=w_j-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})x_j^{(i)}
+$$
+$$
+b = b - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{b}}=b-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})
+$$
+
+Normal equation
+- Only works for linear regression
+- Solve for w,b without iterations
+- Slow if number of features is large (>10,000)
+- Some machine learning libraries might use this to implement linear regression but gradient descent is the recommended method for solving it.
+
