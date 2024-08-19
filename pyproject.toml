@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "machine-learning"
+version = "0.1.0"
+description = ""
+authors = ["Luciana Gomes <lugomes.eq@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+jupyterlab = "^4.2.4"
+matplotlib = "^3.9.2"
+numpy = "^2.1.0"
+pandas = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
