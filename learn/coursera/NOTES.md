@@ -94,3 +94,26 @@ Normal equation
 - Slow if number of features is large (>10,000)
 - Some machine learning libraries might use this to implement linear regression but gradient descent is the recommended method for solving it.
 
+## Feature Scaling
+
+If a feature has a large range of values, the final fitted parameter ends up being small compared to other features. Small changes of the parameter mean a large change on the estimated variable, if the range of values for the feature is large. The contour plots for the gradient descent end up being too tall and skinny (kind of an ellipsis), narrow on one feature and wide on the other. The gradient descent may end bouncing back and forth before finding the minimum. We need to scale the features, so all features have comparable ranges of values and gradient descent converges quickly. 
+
+Aim for about -1 to 1.
+
+Mean normalization
+$$x = \frac{x-\mu}{x_{max}-x_{min}}$$
+
+Z-score normalization
+$$x = \frac{x-\mu}{\sigma}$$
+
+Learning curve: Graph of cost function vs # of iterations. It's helpful to see if gradient descent is working perfectly, and check for convergence as well. We can also declare converge if cost function decreases by less than some threshold at one iteration.
+
+### Choosing an appropriate learning rate
+
+If cost function is oscillating with # of iterations, the learning rate is too large.
+With small enough learning rate, the cost function should decrease at every iteration.
+
+### Feature engineering & Polynomial regression
+
+Feature scaling is paramount here
+
