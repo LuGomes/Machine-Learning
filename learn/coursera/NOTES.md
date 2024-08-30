@@ -84,6 +84,7 @@ Vectorization with numpy: `f = np.dot(w,x)+b`. Runs faster than summing over all
 $$
 w_j = w_j - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{w_j}}=w_j-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})x_j^{(i)}
 $$
+
 $$
 b = b - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{b}}=b-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})
 $$
@@ -101,9 +102,11 @@ If a feature has a large range of values, the final fitted parameter ends up bei
 Aim for about -1 to 1.
 
 Mean normalization
+
 $$x = \frac{x-\mu}{x_{max}-x_{min}}$$
 
 Z-score normalization
+
 $$x = \frac{x-\mu}{\sigma}$$
 
 Learning curve: Graph of cost function vs # of iterations. It's helpful to see if gradient descent is working perfectly, and check for convergence as well. We can also declare converge if cost function decreases by less than some threshold at one iteration.
@@ -117,3 +120,85 @@ With small enough learning rate, the cost function should decrease at every iter
 
 Feature scaling is paramount here
 
+## Classification
+
+### Logistical Regression
+
+
+$$f_{\vec w, b} = g(\vec w \cdot \vec x + b)$$
+
+where the sigmoid function
+
+$$g(z)=\frac{1}{1+e^{-z}}, 0<g(z)<1$$
+
+Idea is that it means the probability that the output is 1. 
+
+Decision boundary - would yield probability 0.5
+$$z = \vec w \cdot \vec x + b = 0$$
+
+Squared error cost function applied to logistic regression would be non convex, which means there'd be a lot of local minima to apply gradient descent. ]
+
+Loss function
+
+$$L(f_{\vec w, b}(\vec x^{(i)}), y^{(i)})=-log(f_{\vec w, b}(\vec x^{(i)}),y^{(i)}=1$$
+
+$$L(f_{\vec w, b}(\vec x^{(i)}), y^{(i)})=-log(1-f_{\vec w, b}(\vec x^{(i)}),y^{(i)}=0$$
+
+Or equivalently
+
+$$L(f_{\vec w, b}(\vec x^{(i)}), y^{(i)})=-y^{(i)}log(f_{\vec w, b}(\vec x^{(i)})-(1-y^{(i)})log(1-f_{\vec w, b}(\vec x^{(i)})$$
+
+Cost function
+
+$$-\frac{1}{m}\sum [y^{(i)}log(f_{\vec w, b}(\vec x^{(i)})+(1-y^{(i)})log(1-f_{\vec w, b}(\vec x^{(i)})]$$
+
+Gradient descent
+
+$$
+w_j = w_j - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{w_j}}=w_j-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})x_j^{(i)}
+$$
+
+$$
+b = b - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{b}}=b-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})
+$$
+
+Looks the same as the linear regression equations, but the definition of f(x) is different
+
+The problem with overfitting
+
+Undefit - high bias
+
+Overfit - high variance
+
+### Addressing Overfitting
+
+- Collect more training examples
+- Feature selection - select features to include/exclude - some info gets lost
+- Reduce size of parameters $w_j$ - Regularization - we keep all features but they never dominate the prediction, it's like having a simpler smoother model at the end
+
+### Cost function with regularization
+
+$\lambda$ is the regularization parameter, >0. We don't penalize the parameter b, since it makes little difference.
+
+$$J(w,b)=\frac{1}{2m} \sum(f_{\vec w, b}(x^{(i)}) - y^{(i)})^2 + \frac{\lambda}{2m}\sum w_j^2$$
+
+### Regularized linear regression
+$$
+w_j = w_j - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{w_j}}=w_j-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})x_j^{(i)}+\frac{\lambda}{m}w_j
+$$
+
+$$
+b = b - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{b}}=b-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})
+$$
+
+### Regularized logistic regression
+
+$$J(\vec w,b)=-\frac{1}{m}\sum [y^{(i)}log(f_{\vec w, b}(\vec x^{(i)})+(1-y^{(i)})log(1-f_{\vec w, b}(\vec x^{(i)})]+\frac{\lambda}{2m}\sum w_j^2$$
+
+$$
+w_j = w_j - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{w_j}}=w_j-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})x_j^{(i)}+\frac{\lambda}{m}w_j
+$$
+
+$$
+b = b - \alpha \dfrac{\partial{J(\vec{w},b)}}{\partial{b}}=b-\alpha \dfrac{1}{m}\sum(f_{\vec{w},b}(\vec{x}^{(i)})-y^{(i)})
+$$
