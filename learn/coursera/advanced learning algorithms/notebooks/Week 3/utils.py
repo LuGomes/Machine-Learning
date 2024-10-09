@@ -1,44 +1,45 @@
-import numpy as np
-
-import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets
+
 plt.style.use('./deeplearning.mplstyle')
 
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
+
 
 def plot_dataset(x, y, title):
     plt.rcParams["figure.figsize"] = (12,8)
     plt.rcParams["lines.markersize"] = 12
-    plt.scatter(x, y, marker='x', c='r'); 
+    plt.scatter(x, y, marker='x', c='r') 
     plt.title(title)
-    plt.xlabel("x"); 
-    plt.ylabel("y"); 
+    plt.xlabel("x") 
+    plt.ylabel("y") 
     plt.show()
 
 def plot_train_cv_test(x_train, y_train, x_cv, y_cv, x_test, y_test, title):
-    plt.scatter(x_train, y_train, marker='x', c='r', label='training'); 
-    plt.scatter(x_cv, y_cv, marker='o', c='b', label='cross validation'); 
-    plt.scatter(x_test, y_test, marker='^', c='g', label='test'); 
+    plt.scatter(x_train, y_train, marker='x', c='r', label='training') 
+    plt.scatter(x_cv, y_cv, marker='o', c='b', label='cross validation') 
+    plt.scatter(x_test, y_test, marker='^', c='g', label='test') 
     plt.title("input vs. target")
-    plt.xlabel("x"); 
-    plt.ylabel("y"); 
+    plt.xlabel("x") 
+    plt.ylabel("y") 
     plt.legend()
     plt.show()
 
 def plot_train_cv_mses(degrees, train_mses, cv_mses, title):
     degrees = range(1,11)
-    plt.plot(degrees, train_mses, marker='o', c='r', label='training MSEs'); 
-    plt.plot(degrees, cv_mses, marker='o', c='b', label='CV MSEs'); 
+    plt.plot(degrees, train_mses, marker='o', c='r', label='training MSEs') 
+    plt.plot(degrees, cv_mses, marker='o', c='b', label='CV MSEs') 
     plt.title(title)
-    plt.xlabel("degree"); 
-    plt.ylabel("MSE"); 
+    plt.xlabel("degree") 
+    plt.ylabel("MSE") 
     plt.legend()
     plt.show()
 
@@ -46,10 +47,10 @@ def plot_bc_dataset(x, y, title):
     for i in range(len(y)):
         marker = 'x' if y[i] == 1 else 'o'
         c = 'r' if y[i] == 1 else 'b'
-        plt.scatter(x[i,0], x[i,1], marker=marker, c=c); 
+        plt.scatter(x[i,0], x[i,1], marker=marker, c=c) 
     plt.title("x1 vs x2")
-    plt.xlabel("x1"); 
-    plt.ylabel("x2"); 
+    plt.xlabel("x1") 
+    plt.ylabel("x2") 
     y_0 = mlines.Line2D([], [], color='r', marker='x', markersize=12, linestyle='None', label='y=1')
     y_1 = mlines.Line2D([], [], color='b', marker='o', markersize=12, linestyle='None', label='y=0')
     plt.title(title)
@@ -198,13 +199,13 @@ def train_plot_poly(model, x_train, y_train, x_cv, y_cv, max_degree=10, baseline
         cv_mses.append(cv_mse)
 
     # Plot the results
-    plt.plot(degrees, train_mses, marker='o', c='r', label='training MSEs'); 
-    plt.plot(degrees, cv_mses, marker='o', c='b', label='CV MSEs'); 
+    plt.plot(degrees, train_mses, marker='o', c='r', label='training MSEs') 
+    plt.plot(degrees, cv_mses, marker='o', c='b', label='CV MSEs') 
     plt.plot(degrees, np.repeat(baseline, len(degrees)), linestyle='--', label='baseline')
     plt.title("degree of polynomial vs. train and CV MSEs")
     plt.xticks(degrees)
-    plt.xlabel("degree"); 
-    plt.ylabel("MSE"); 
+    plt.xlabel("degree") 
+    plt.ylabel("MSE") 
     plt.legend()
     plt.show()
     
@@ -249,12 +250,12 @@ def train_plot_reg_params(reg_params, x_train, y_train, x_cv, y_cv, degree= 1, b
 
     # Plot the results
     reg_params = [str(x) for x in reg_params]
-    plt.plot(reg_params, train_mses, marker='o', c='r', label='training MSEs'); 
-    plt.plot(reg_params, cv_mses, marker='o', c='b', label='CV MSEs'); 
+    plt.plot(reg_params, train_mses, marker='o', c='r', label='training MSEs') 
+    plt.plot(reg_params, cv_mses, marker='o', c='b', label='CV MSEs') 
     plt.plot(reg_params, np.repeat(baseline, len(reg_params)), linestyle='--', label='baseline')
     plt.title("lambda vs. train and CV MSEs")
-    plt.xlabel("lambda"); 
-    plt.ylabel("MSE"); 
+    plt.xlabel("lambda") 
+    plt.ylabel("MSE") 
     plt.legend()
     plt.show()
 
@@ -302,14 +303,14 @@ def train_plot_diff_datasets(model, files, max_degree=10, baseline=None):
             cv_mses.append(cv_mse)
 
         # Plot the results
-        plt.plot(degrees, train_mses, marker='o', c='r', linestyle=file['linestyle'], label=f"{file['label']} training MSEs"); 
-        plt.plot(degrees, cv_mses, marker='o', c='b', linestyle=file['linestyle'], label=f"{file['label']} CV MSEs"); 
+        plt.plot(degrees, train_mses, marker='o', c='r', linestyle=file['linestyle'], label=f"{file['label']} training MSEs") 
+        plt.plot(degrees, cv_mses, marker='o', c='b', linestyle=file['linestyle'], label=f"{file['label']} CV MSEs") 
 
     plt.plot(degrees, np.repeat(baseline, len(degrees)), linestyle='--', label='baseline')
     plt.title("degree of polynomial vs. train and CV MSEs")
     plt.xticks(degrees)
-    plt.xlabel("degree"); 
-    plt.ylabel("MSE"); 
+    plt.xlabel("degree") 
+    plt.ylabel("MSE") 
     plt.legend()
     plt.show()
 
@@ -363,11 +364,21 @@ def train_plot_learning_curve(model, x_train, y_train, x_cv, y_cv, degree= 1, ba
         cv_mses.append(cv_mse)
 
     # Plot the results
-    plt.plot(num_samples_train_and_cv, train_mses, marker='o', c='r', label='training MSEs'); 
-    plt.plot(num_samples_train_and_cv, cv_mses, marker='o', c='b', label='CV MSEs'); 
+    plt.plot(num_samples_train_and_cv, train_mses, marker='o', c='r', label='training MSEs') 
+    plt.plot(num_samples_train_and_cv, cv_mses, marker='o', c='b', label='CV MSEs') 
     plt.plot(num_samples_train_and_cv, np.repeat(baseline, len(percents)), linestyle='--', label='baseline')
     plt.title("number of examples vs. train and CV MSEs")
-    plt.xlabel("total number of training and cv examples"); 
-    plt.ylabel("MSE"); 
+    plt.xlabel("total number of training and cv examples") 
+    plt.ylabel("MSE") 
     plt.legend()
     plt.show()
+
+
+def load_data():
+    iris = datasets.load_iris()
+    X = iris.data[:, :2]  # we only take the first two features.
+    y = iris.target
+
+    X = X[y != 2] # only two classes
+    y = y[y != 2]
+    return X, y
