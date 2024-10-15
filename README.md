@@ -7,3 +7,7 @@ Courses:
     by DeepLearning.AI & Stanford University (Coursera)
 - Advanced Learning Algorithms
     by DeepLearning.AI & Stanford University (Coursera)
+- Unsupervised Learning, Recommenders, Reinforcement Learning
+    by DeepLearning.AI & Stanford University (Coursera)
+- Generative AI with Large Language Models
+    by DeepLearning.AI & Amazon Web Services (Coursera)
