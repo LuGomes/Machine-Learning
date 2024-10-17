@@ -11,3 +11,5 @@ Courses:
     by DeepLearning.AI & Stanford University (Coursera)
 - Generative AI with Large Language Models
     by DeepLearning.AI & Amazon Web Services (Coursera)
+- Prompt Engineering for ChatGPT
+    by Vanderbilt University (Coursera)
