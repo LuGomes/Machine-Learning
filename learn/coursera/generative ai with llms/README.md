@@ -61,3 +61,33 @@ Temperature influences the shape of the probability distribution. The higher the
 
 ![temperature configuration](./images/temperature_config.png)
 ![AI project lifecycle](./images/project_lifecycle.png)
+
+LLM pre-training: learning from large amounts of unstructured textual data, learning patterns and structures in the language. Involves a lot of compute and GPUs. Often needed are data filtering, to improve quality, reduce bias and remove harmful content. Only 1-3% of the original tokens are kept for training!
+
+![LLM pre-training](./images/llm_pretraining.png)
+
+Encoder only models are trained on masked language modeling tasks, where some tokens are masked and the model has to predict them. These models build bidirectional representations of the input sequence, understanding the full context of each token in the sequence. They are good for tasks that benefit from understanding the full context of the input: sentiment analysis, named entity recognition, word classification. e.g. BERT, ROBERTA.
+
+![encoder only models](./images/autoencoding_models.png)
+
+Decoder only models are trained on causal language modeling tasks, where the model has to predict the next token in the sequence. The context used is unidirectional. These models are good for tasks like text generation. e.g. GPT, BLOOM.
+
+![decoder only models](./images/autoregressive_models.png)
+
+Encoder-decoder models are trained based on span corruption tasks. These models are good for translation, summarization, question answering. e.g. BART, T5.
+
+![encoder-decoder models](./images/sequence_to_sequence_models.png)
+
+Computational challenges: CUDA runs out of memory. e.g. 24GB of GPU RAM to train a 1B parameter model @ 32-bit precision. This is to store the model weights, activations, gradients, optimizer states, etc.
+
+To address this, 16-bit precision can be used (quantization), which lowers precision but is acceptable for most cases.
+
+![quantization](./images/quantization.png)
+
+BFLOAT16 is another option, used for newer deep learning models.
+
+![bfloat16](./images/bfloat16_quantization.png)
+
+Quantization aware training learns the quantization scaling factors during training.
+
+As models scale, multiple GPUs are needed. 
