@@ -2,11 +2,15 @@
 
 Generative AI Foundational Models: GPT, LLaMa, BERT, PaLM, BLOOM, FLAN-T5.
 
+![foundational models](./images/foundational_models.png)
+
 The more parameters, the more memory and language understanding and the more sophisticated tasks it can perform.
 
-Prompt -> Model Inference -> Completion
+Prompt (Context Window) -> Inference -> Completion
 
 **Next word prediction** can be used for summarization, translation, coding, information retrieval, named entity recognition...
+
+You don't always need a large model, smaller models can be fine-tuned to specific focused tasks. 
 
 Previous generation models used Recurrent Neural Networks (RNNs). RNNs while powerful for their time, were limited by the amount of compute and memory needed to perform well at generative tasks.
 
@@ -16,13 +20,19 @@ Previous generation models used Recurrent Neural Networks (RNNs). RNNs while pow
 
 The power of the transformer architecture lies in its ability to learn the relevance and context of all of the words in a sentence. Not just to each word next to its neighbor, but to every other word in a sentence. To apply attention weights to those relationships so that the model learns the relevance of each word to each other words no matter where they are in the input. 
 
+![self-attention](./images/self_attention.png)
+
+![complete transformer architecture](./images/complete_transformer_architecture.png)
+
 ![transformer architecture](./images/transformer_architecture.png)
 
-Words are tokenized before fed to the model. A token can be the whole word or part of the word. You then have to use the same tokenizer to train and predict. The token is then embedded, mapped to a multidimensional vector, that encodes the meaning and context of each token. Positional embeddings are also added to preserve the ordering of words in the input sentence.
+Words are tokenized before fed to the model since a Machine Learning model works with numbers and not words. A token can represent the whole word or a part of the word. You then have to use the same tokenizer to train and predict/generate. The token is then embedded, mapped to a multidimensional vector, that encodes the meaning and context of individual tokens in the input sequence. Positional embeddings are also added to preserve the ordering of words in the input sentence.
+
+![word embeddings](./images/word_embeddings.png)
 
 ![positional embeddings](./images/positional_embeddings.png)
 
-The embeddings are passed into the self-attention layers, which learn the importance of every word to every other word in the input sequence. It has **Multi-headed self-attention**. This means that multiple sets of self-attention weights or heads are learned in parallel independently of each other. The number of attention heads included in the attention layer varies from model to model, but numbers in the range of 12-100 are common. The intuition here is that each self-attention head will learn a different aspect of language. For example, one head may see the relationship between the people entities in our sentence. Whilst another head may focus on the activity of the sentence. Whilst yet another head may focus on some other properties such as if the words rhyme.
+The embeddings are passed into the self-attention layers, which learn the importance of every word to every other word in the input sequence. It has **Multi-headed self-attention**. This means that multiple sets of self-attention weights or heads are learned in parallel independently of each other. The number of attention heads included in the attention layer varies from model to model, but numbers in the range of 12-100 are common. The intuition here is that each self-attention head will learn a different aspect of language. For example, one head may see the relationship between the people entities in our sentence. Whilst another head may focus on the activity of the sentence. Whilst yet another head may focus on some other properties such as if the words rhyme. We don't dictate ahead of time which aspect of language each head will learn, the weights of each head are randomly initialized.
 
 ![multi-headed self-attention](./images/multiheaded_self_attention.png)
 
@@ -39,11 +49,21 @@ Encoder: encodes inputs ("prompts") with contextual understanding and produces o
 
 Decoder: Accepts input tokens and generates new tokens.
 
-There are encoder only models, encoder decoders models and decoder only models. 
+There are encoder only models, encoder decoders models and decoder only models. Decoder only models are the most popular today.
+
+**"Attention is All You Need"**
+
+"Attention is All You Need" is a research paper published in 2017 by Google researchers, which introduced the Transformer model, a novel architecture that revolutionized the field of natural language processing (NLP) and became the basis for the LLMs we  now know - such as GPT, PaLM and others. The paper proposes a neural network architecture that replaces traditional recurrent neural networks (RNNs) and convolutional neural networks (CNNs) with an entirely attention-based mechanism. 
+
+The Transformer model uses self-attention to compute representations of input sequences, which allows it to capture long-term dependencies and parallelize computation effectively. The authors demonstrate that their model achieves state-of-the-art performance on several machine translation tasks and outperforms previous models that rely on RNNs or CNNs.
+
+The Transformer architecture consists of an encoder and a decoder, each of which is composed of several layers. Each layer consists of two sub-layers: a multi-head self-attention mechanism and a feed-forward neural network. The multi-head self-attention mechanism allows the model to attend to different parts of the input sequence, while the feed-forward network applies a point-wise fully connected layer to each position separately and identically. 
+
+The Transformer model also uses residual connections and layer normalization to facilitate training and prevent overfitting. In addition, the authors introduce a positional encoding scheme that encodes the position of each token in the input sequence, enabling the model to capture the order of the sequence without the need for recurrent or convolutional operations.
 
 **Prompt engineering**
 
-- **In-context learning** - Include examples in the context window. Zero / one / few shot inference. If more than 5-6 examples don't increase performance, fine-tuning should be preferred. 
+- **In-context learning** - Include examples in the context window to help the model learn the task. Zero / one / few shot inference. If more than 5-6 examples don't increase performance, fine-tuning should be preferred. 
 
 The larger the model, the more performant it is at zero shot inference. Smaller models are generally good at a few tasks, similar to the ones they were trained on.
 
@@ -51,13 +71,13 @@ The larger the model, the more performant it is at zero shot inference. Smaller 
 
 Inference configuration parameters - temperature, max new tokens, topK, topP.
 
-Greedy vs random sampling - greedy will always choose the word with the highest probability but words can be repeated and the answer gets less natural and less reasonable. Random sampling will select based on random-weighted strategy across all probabilities.
+Greedy vs random sampling - greedy will always choose the word with the highest probability but words can be repeated and the answer gets less natural and less reasonable so this method is good for short generation. Random sampling will select based on random-weighted strategy across all probabilities so this generates more natural and creative text.
 
 topK selects an output using the top-K results after applying random-weighted strategy using the probabilities. 
 
 topP selects using the random-weighted strategy with the top-ranked consecutive results by probability and with a cumulative probability <= p.
 
-Temperature influences the shape of the probability distribution. The higher the temperature, the higher the randomness.
+Temperature influences the shape of the probability distribution. The higher the temperature, the higher the randomness. The temperature actually alters the predictions the model will make, unlike topK or topP.
 
 ![temperature configuration](./images/temperature_config.png)
 ![AI project lifecycle](./images/project_lifecycle.png)
